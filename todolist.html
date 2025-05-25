@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+
+    <style>
+  .todo-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .todo-text {
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .completed {
+    text-decoration: line-through;
+    color: gray;
+  }
+
+  input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    padding: 8px 12px;
+    margin-left: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+  .delete-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: red;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .delete-btn:hover {
+    color: darkred;
+  }
+
+.todo-item {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   margin: 6px 0;
+   padding: 6px 10px;
+   border-radius: 6px;
+   background-color: #f9f9f9;
+   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.delete-btn {
+   background: none;
+   border: none;
+   color: red;
+   font-size: 18px;
+   cursor: pointer;
+   padding: 0 5px;
+}
+</style>
+
+</head>
+<body>
+    <H1>Todo List</H1>
+    <input type="text" id="todoInput" placeholder="Tambahkan todo..." />
+    <button onclick="addTodo()">Tambah</button>
+    <div id="todoList"></div>
+
+    <script>
+  // Saat halaman dibuka, ambil data dari localStorage
+  window.onload = function () {
+    const saved = localStorage.getItem("todos");
+    if (saved) {
+      const todos = JSON.parse(saved);
+      todos.forEach(todo => buatTodo(todo.text, todo.completed));
+    }
+  };
+
+  // Fungsi untuk menambah item baru
+  function addTodo() {
+    const input = document.getElementById("todoInput");
+    const text = input.value.trim();
+    if (text === "") return;
+    buatTodo(text, false);
+    input.value = "";
+    simpanTodos();
+  }
+
+  // Fungsi utama untuk membuat elemen todo
+  function buatTodo(text, completed) {
+    const list = document.getElementById("todoList");
+
+    const item = document.createElement("div");
+    item.className = "todo-item";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = completed;
+
+    const label = document.createElement("span");
+    label.textContent = text;
+    label.className = "todo-text";
+    if (completed) label.classList.add("completed");
+
+    checkbox.onchange = function () {
+      label.classList.toggle("completed", checkbox.checked);
+      simpanTodos();
+    };
+
+    const hapus = document.createElement("button");
+    hapus.textContent = "🗑️";
+    hapus.className = "delete-btn";
+    hapus.onclick = function () {
+      list.removeChild(item);
+      simpanTodos();
+    };
+
+    item.appendChild(checkbox);
+    item.appendChild(label);
+    item.appendChild(hapus);
+
+    list.appendChild(item);
+  }
+
+  // Simpan semua item ke localStorage
+  function simpanTodos() {
+    const items = document.querySelectorAll(".todo-item");
+    const data = [];
+    items.forEach(item => {
+      const text = item.querySelector("span").textContent;
+      const done = item.querySelector("input").checked;
+      data.push({ text: text, completed: done });
+    });
+    localStorage.setItem("todos", JSON.stringify(data));
+  }
+</script>
+
+
+</body>
+</html>

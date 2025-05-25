@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+<body>
+    <input type="text" id="input-todo" placeholder="tambahkan todo" onkeyup="tambah(event)"/>
+    <ul id="daftar-list">
+
+    </ul>
+
+    <script>
+        const listTodo = [
+            
+
+    ]
+        //daftar referensi element
+        const elementDaftarList = document.getElementById('daftar-list');
+
+        for(i=0; i < listTodo.length; i++){
+        const li = document.createElement('li');
+        li.innerHTML = listTodo(i);
+        elementDaftarList.appendChild(li)
+        }
+
+       function tambah(event){
+        console.log('tambah dipanggil')
+        if(event.key === "Enter"){
+            const inputTodo = document.getElementById('input-todo');
+            let valueInputTodo = inputTodo.value;
+            console.log(valueInputTodo)
+
+            const li = document.createElement('li');
+
+            const textSpan = document.createElement('span')
+            textSpan.innerHTML = valueInputTodo;
+            li.appendChild(textSpan)
+
+            const checkbox = document.createElement('input')
+            checkbox.setAttribute('type', 'checkbox')
+            li.appendChild(checkbox)
+
+            //li.innerHTML = valueInputTodo;
+            elementDaftarList.appendChild(li)
+        }
+       }
+    </script>
+</body>
+</html>
